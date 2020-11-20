@@ -1,0 +1,27 @@
+{
+   "name": "PetCare",
+   "version": "1.0.0",
+   "description": "API para o aplicativo PetCare",
+   "main": "index.js",
+   "scripts": {
+      "build": "rimraf ./build && tsc",
+      "start:dev": "nodemon",
+      "start": "ts-node src/index.ts"
+   },
+   "license": "MIT",
+   "devDependencies": {
+      "@types/cors": "^2.8.8",
+      "@types/express": "^4.17.9",
+      "@types/node": "^8.0.29",
+      "nodemon": "^2.0.6",
+      "ts-node": "3.3.0",
+      "typescript": "3.3.3333"
+   },
+   "dependencies": {
+      "cors": "^2.8.5",
+      "express": "^4.17.1",
+      "mysql": "^2.14.1",
+      "reflect-metadata": "^0.1.10",
+      "typeorm": "0.2.29"
+   }
+}
