@@ -11,7 +11,7 @@ export class PetType {
     })
     description!: string;
 
-    @OneToMany(type => Breed, breed => breed.animalType, {nullable: false, cascade: true})
+    @OneToMany(type => Breed, breed => breed.animalType, {nullable: false})
     @JoinColumn()
     breeds!: Breed[];
 }

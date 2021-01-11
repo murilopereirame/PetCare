@@ -11,6 +11,6 @@ export class UserType {
     })
     description!: string;
 
-    @OneToMany(user => User, user => user.userType, {nullable: false, cascade: true})
+    @OneToMany(user => User, user => user.userType, {nullable: false})
     user!: User[];
 }

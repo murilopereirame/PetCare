@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { User } from "../entity/User";
+import { Adoption } from "../entity/Adoption";
 import Database from "../utils/Database";
 
-export default class UserController {
+export default class AdoptionController {
     async index(request: Request, response: Response) {
         let connection = await Database.getInstance().getConnection();
-        connection.manager.find(User).then((entity: User[]) => {
+        connection.manager.find(Adoption).then((entity: Adoption[]) => {
             response.statusCode = 200;
             return response.json(entity);
         }).catch((err) => {
@@ -18,9 +18,10 @@ export default class UserController {
         let conditions = request.query;
         let connection = await Database.getInstance().getConnection();
 
-        connection.manager.find(User, {
-            where: conditions            
-        }).then((entity: User[]) => {
+        connection.manager.find(Adoption, {
+            where: conditions,
+            relations: ['pet', 'user']      
+        }).then((entity: Adoption[]) => {
             response.statusCode = 200;
             return response.json(entity);
         }).catch(err => {
@@ -30,7 +31,7 @@ export default class UserController {
     }
 
     async create(request: Request, response: Response) {
-        let user = Object.assign(new User(), request.body);
+        let user = Object.assign(new Adoption(), request.body);
         let connection = await Database.getInstance().getConnection();
         
         connection.manager.save(user).then((entity: any) => {            
@@ -43,11 +44,11 @@ export default class UserController {
     }
 
     async update(request: Request, response: Response) {
-        let user = Object.assign(new User(), request.body);
+        let user = Object.assign(new Adoption(), request.body);
         let connection = await Database.getInstance().getConnection();
 
         connection.manager.update(
-            User, 
+            Adoption, 
             request.params.id, 
             user
         ).then((result: any) => {
@@ -64,8 +65,8 @@ export default class UserController {
     async delete(request: Request, response: Response) {
         let connection = await Database.getInstance().getConnection();
 
-        connection.manager.delete(User, {
-            idUser: request.params.id
+        connection.manager.delete(Adoption, {
+            idAdoption: request.params.id
         }).then((result: any) => {
             response.statusCode = 200;
             return response.json({

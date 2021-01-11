@@ -15,7 +15,7 @@ export default class Database {
         if(!Database.connection)
             Database.connection = await createConnection({
                 type: "mysql",
-                host: "localhost",
+                host: "192.168.7.2",
                 port: 3306,
                 username: "aturing",
                 password: "640kIsEnough",

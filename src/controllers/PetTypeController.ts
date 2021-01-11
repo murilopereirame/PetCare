@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { User } from "../entity/User";
+import { PetType } from "../entity/PetType";
 import Database from "../utils/Database";
 
-export default class UserController {
+export default class PetTypeController {
     async index(request: Request, response: Response) {
         let connection = await Database.getInstance().getConnection();
-        connection.manager.find(User).then((entity: User[]) => {
+        connection.manager.find(PetType).then((entity: PetType[]) => {
             response.statusCode = 200;
             return response.json(entity);
         }).catch((err) => {
@@ -18,9 +18,9 @@ export default class UserController {
         let conditions = request.query;
         let connection = await Database.getInstance().getConnection();
 
-        connection.manager.find(User, {
+        connection.manager.find(PetType, {
             where: conditions            
-        }).then((entity: User[]) => {
+        }).then((entity: PetType[]) => {
             response.statusCode = 200;
             return response.json(entity);
         }).catch(err => {
@@ -30,26 +30,27 @@ export default class UserController {
     }
 
     async create(request: Request, response: Response) {
-        let user = Object.assign(new User(), request.body);
+        let petType = Object.assign(new PetType(), request.body);
         let connection = await Database.getInstance().getConnection();
         
-        connection.manager.save(user).then((entity: any) => {            
+        connection.manager.save(petType).then((entity: any) => {            
             response.statusCode = 201;
             return response.json(entity);
         }).catch(err => {
+            console.log(err);
             response.statusCode = 500;
             return response.json({auth: false, error: "There was an error on our servers"});
         }); 
     }
 
     async update(request: Request, response: Response) {
-        let user = Object.assign(new User(), request.body);
+        let petType = Object.assign(new PetType(), request.body);
         let connection = await Database.getInstance().getConnection();
 
         connection.manager.update(
-            User, 
+            PetType, 
             request.params.id, 
-            user
+            petType
         ).then((result: any) => {
             response.statusCode = 200;
             return response.json({
@@ -64,8 +65,8 @@ export default class UserController {
     async delete(request: Request, response: Response) {
         let connection = await Database.getInstance().getConnection();
 
-        connection.manager.delete(User, {
-            idUser: request.params.id
+        connection.manager.delete(PetType, {
+            idType: request.params.id
         }).then((result: any) => {
             response.statusCode = 200;
             return response.json({
