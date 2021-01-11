@@ -1,4 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from "typeorm";
+import { Adoption } from "./Adoption";
+import { Pet } from "./Pet";
 import { UserType } from "./UserType";
 
 @Entity()
@@ -67,4 +69,10 @@ export class User {
 
     @ManyToOne(type => UserType, type => type.user, {nullable: false, cascade: true})
     userType!: UserType;
+
+    @OneToMany(type => Adoption, adoption => adoption.user)
+    adoptions!: Adoption[]
+
+    @OneToMany(type => Pet, pets => pets.user)
+    pets!: Pet[]
 }

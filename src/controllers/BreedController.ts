@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
-import { User } from "../entity/User";
+import { Breed } from "../entity/Breed";
 import Database from "../utils/Database";
 
-export default class UserController {
+export default class BreedController {
     async index(request: Request, response: Response) {
         let connection = await Database.getInstance().getConnection();
-        connection.manager.find(User).then((entity: User[]) => {
+        connection.manager.find(Breed).then((entity: Breed[]) => {
             response.statusCode = 200;
             return response.json(entity);
         }).catch((err) => {
@@ -18,9 +18,9 @@ export default class UserController {
         let conditions = request.query;
         let connection = await Database.getInstance().getConnection();
 
-        connection.manager.find(User, {
+        connection.manager.find(Breed, {
             where: conditions            
-        }).then((entity: User[]) => {
+        }).then((entity: Breed[]) => {
             response.statusCode = 200;
             return response.json(entity);
         }).catch(err => {
@@ -30,7 +30,7 @@ export default class UserController {
     }
 
     async create(request: Request, response: Response) {
-        let user = Object.assign(new User(), request.body);
+        let user = Object.assign(new Breed(), request.body);
         let connection = await Database.getInstance().getConnection();
         
         connection.manager.save(user).then((entity: any) => {            
@@ -43,11 +43,11 @@ export default class UserController {
     }
 
     async update(request: Request, response: Response) {
-        let user = Object.assign(new User(), request.body);
+        let user = Object.assign(new Breed(), request.body);
         let connection = await Database.getInstance().getConnection();
 
         connection.manager.update(
-            User, 
+            Breed, 
             request.params.id, 
             user
         ).then((result: any) => {
@@ -64,8 +64,8 @@ export default class UserController {
     async delete(request: Request, response: Response) {
         let connection = await Database.getInstance().getConnection();
 
-        connection.manager.delete(User, {
-            idUser: request.params.id
+        connection.manager.delete(Breed, {
+            idBreed: request.params.id
         }).then((result: any) => {
             response.statusCode = 200;
             return response.json({

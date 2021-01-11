@@ -9,9 +9,10 @@ Database.getInstance().getConnection();
 //Configure server
 const app = express();
 app.use(cors());
+app.use(express.json());
 app.use(routes);
 
 //Init server
-app.listen(6789, () => {
-    console.log("Server running at port 6789");
+app.listen(9229, () => {
+    console.log("Server running at port 9229");
 });

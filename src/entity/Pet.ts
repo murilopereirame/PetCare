@@ -1,5 +1,6 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne} from "typeorm";
 import { Breed } from "./Breed";
+import { User } from "./User";
 
 @Entity()
 export class Pet {
@@ -19,7 +20,10 @@ export class Pet {
     })
     description!: string;
 
-    @OneToOne(type => Breed, {nullable: false, cascade: true})
+    @ManyToOne(type => Breed, {nullable: false, cascade: true})
     @JoinColumn()
     breed!: Breed;
+
+    @ManyToOne(type => User, user => user.pets, {nullable: false, cascade: true})
+    user!: User;
 }
