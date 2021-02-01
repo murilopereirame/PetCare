@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import Database from './config/Database';
+import routes from './routes';
 
 //Init database
 Database.getInstance().getConnection();
@@ -9,14 +10,7 @@ Database.getInstance().getConnection();
 const app = express();
 app.use(cors());
 app.use(express.json());
-
-//Routes
-import Pets from './routes/Pets';
-import Users from './routes/Users';
-//
-
-app.use('/api/v1/users', Users);
-app.use('/api/v1/pets', Pets);
+app.use('/api/v1', routes);
 
 //Init server
 const server = app.listen(6789, () => {

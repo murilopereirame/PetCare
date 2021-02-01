@@ -1,0 +1,41 @@
+version: '3'
+services:
+  mysql:
+    container_name: petcare_database
+    image: mariadb:10.3
+    environment:
+      MYSQL_ROOT_PASSWORD: xJ2NgDgSbd
+      MYSQL_DATABASE: petcare
+      MYSQL_USER: aturing
+      MYSQL_PASSWORD: 640kIsEnough
+    restart: on-failure
+    ports:
+      - 3306:3306
+    networks:
+      petcare:
+        ipv4_address: 192.168.7.2
+
+  server:
+    container_name: petcare_api   
+    build: 
+      context: ../
+      dockerfile: ./Docker/api/Dockerfile
+    ports:
+      - 5039:5039
+      - 9229:9229
+    depends_on:
+      - mysql
+    volumes:
+      - ../:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      petcare:
+        ipv4_address: 192.168.7.3
+    restart: on-failure
+
+networks:
+  petcare:
+    driver: bridge
+    ipam:
+     config:
+       - subnet: 192.168.7.0/24
