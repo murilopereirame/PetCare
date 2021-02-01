@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Breed } from "../entity/Breed";
-import Database from "../utils/Database";
+import Database from "../config/Database";
 
 export default class BreedController {
     async index(request: Request, response: Response) {

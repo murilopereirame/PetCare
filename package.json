@@ -1,5 +1,5 @@
 {
-   "name": "PetCare",
+   "name": "petcare-backend",
    "version": "1.0.0",
    "description": "API para o aplicativo PetCare",
    "main": "index.js",
@@ -18,8 +18,12 @@
       "typescript": "3.3.3333"
    },
    "dependencies": {
+      "@types/multer-s3": "^2.7.8",
+      "aws-sdk": "^2.812.0",
       "cors": "^2.8.5",
       "express": "^4.17.1",
+      "multer": "^1.4.2",
+      "multer-s3": "^2.9.0",
       "mysql": "^2.14.1",
       "reflect-metadata": "^0.1.10",
       "typeorm": "0.2.29"

@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
+import Database from './config/Database';
 import routes from './routes';
-import Database from './utils/Database';
 
 //Init database
 Database.getInstance().getConnection();
@@ -10,9 +10,14 @@ Database.getInstance().getConnection();
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use(routes);
+app.use('/api/v1', routes);
 
 //Init server
-app.listen(6789, () => {
+const server = app.listen(6789, () => {
     console.log("Server running at port 6789");
 });
+
+process.on('unhandledRejection', (err: any, promise) => {
+    console.log(`Error: ${err.message}`);
+    server.close(() => process.exit(1));
+})

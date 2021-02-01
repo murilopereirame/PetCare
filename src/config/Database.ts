@@ -18,7 +18,7 @@ export default class Database {
                 host: "192.168.7.2",
                 port: 3306,
                 username: "root",
-                password: "xJ2NgDgSbd",
+                password: "36562749",
                 database: "petcare",
                 synchronize: true,
                 logging: false,

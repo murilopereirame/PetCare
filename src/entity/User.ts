@@ -1,4 +1,4 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, ManyToMany, JoinTable} from "typeorm";
 import { Adoption } from "./Adoption";
 import { Pet } from "./Pet";
 import { UserType } from "./UserType";
@@ -73,6 +73,13 @@ export class User {
     @OneToMany(type => Adoption, adoption => adoption.user)
     adoptions!: Adoption[]
 
-    @OneToMany(type => Pet, pets => pets.user)
-    pets!: Pet[]
+    @OneToMany(() => Pet, pet => pet.user, {
+        cascade: true
+    })
+    pets!: Pet[];
+
+    @ManyToMany(() => Pet)
+    @JoinTable()
+    likedPets!: Pet[];
+
 }

@@ -1,9 +1,11 @@
-import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne} from "typeorm";
+import {Entity, PrimaryGeneratedColumn, Column, OneToOne, JoinColumn, ManyToOne, OneToMany} from "typeorm";
 import { Breed } from "./Breed";
 import { User } from "./User";
+import { PetImage } from './PetImage';
 
 @Entity()
 export class Pet {
+
     @PrimaryGeneratedColumn()
     idPet!: number;
 
@@ -14,6 +16,11 @@ export class Pet {
         length: 80
     })
     name!: string;
+    
+    @OneToMany(() => PetImage, petImage => petImage.pet, {
+        cascade: true
+    })
+    images!: PetImage[];
 
     @Column({
         length: 160
@@ -26,4 +33,8 @@ export class Pet {
 
     @ManyToOne(type => User, user => user.pets, {nullable: false, cascade: true})
     user!: User;
+    @Column({
+        length: 100
+    })
+    info!: string;
 }

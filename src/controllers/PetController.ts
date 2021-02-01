@@ -1,12 +1,18 @@
 import { Request, Response } from "express";
 import { Pet } from "../entity/Pet";
-import Database from "../utils/Database";
+import Database from "../config/Database";
 
 export default class PetController {
-  async index(request: Request, response: Response) {
+  getPets = async (request: Request, response: Response) => {
     let connection = await Database.getInstance().getConnection();
+    let options: any = { relations: ["images", "user"] };
+
+    if (request.query) {
+      options.where = request.query;
+    }
+
     connection.manager
-      .find(Pet)
+      .find(Pet, options)
       .then((entity: Pet[]) => {
         response.statusCode = 200;
         return response.json(entity);
@@ -18,24 +24,15 @@ export default class PetController {
           error: "There was an error on our servers",
         });
       });
-  }
+  };
 
-  async avaliablePets(request: Request, response: Response) {
-    let connection = await Database.getInstance().getConnection();
-    let result = connection.query(
-      "SELECT * FROM pet LEFT OUTER JOIN adoption ON pet.idPet = adoption.petIdPet;"
-    );
-    console.log(result);
-  }
-
-  async search(request: Request, response: Response) {
+  getPet = async (request: Request, response: Response) => {
     let conditions = request.query;
     let connection = await Database.getInstance().getConnection();
 
     connection.manager
       .find(Pet, {
         where: conditions,
-        relations: ['user']
       })
       .then((entity: Pet[]) => {
         response.statusCode = 200;
@@ -48,9 +45,9 @@ export default class PetController {
           error: "There was an error on our servers",
         });
       });
-  }
+  };
 
-  async create(request: Request, response: Response) {
+  createPet = async (request: Request, response: Response) => {
     let user = Object.assign(new Pet(), request.body);
     let connection = await Database.getInstance().getConnection();
 
@@ -62,14 +59,11 @@ export default class PetController {
       })
       .catch((err) => {
         response.statusCode = 500;
-        return response.json({
-          auth: false,
-          error: "There was an error on our servers",
-        });
+        return response.json({ auth: false, error: err });
       });
-  }
+  };
 
-  async update(request: Request, response: Response) {
+  updatePet = async (request: Request, response: Response) => {
     let user = Object.assign(new Pet(), request.body);
     let connection = await Database.getInstance().getConnection();
 
@@ -88,14 +82,22 @@ export default class PetController {
           error: "There was an error on our servers",
         });
       });
+  };
+
+  avaliablePets = async (request: Request, response: Response) => {
+    let connection = await Database.getInstance().getConnection();
+    let result = connection.query(
+      "SELECT * FROM pet LEFT OUTER JOIN adoption ON pet.idPet = adoption.petIdPet;"
+    );
+    console.log(result);
   }
 
-  async delete(request: Request, response: Response) {
+  deletePet = async (request: Request, response: Response) => {
     let connection = await Database.getInstance().getConnection();
 
     connection.manager
       .delete(Pet, {
-        idPet: request.params.id,
+        id: request.params.id,
       })
       .then((result: any) => {
         response.statusCode = 200;
@@ -110,5 +112,5 @@ export default class PetController {
           error: "There was an error on our servers",
         });
       });
-  }
+  };
 }

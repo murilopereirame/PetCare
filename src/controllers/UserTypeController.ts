@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { UserType } from "../entity/UserType";
-import Database from "../utils/Database";
+import Database from "../config/Database";
 
 export default class UserTypeController {
     async index(request: Request, response: Response) {

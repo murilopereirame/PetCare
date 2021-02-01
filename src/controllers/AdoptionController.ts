@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { Adoption } from "../entity/Adoption";
-import Database from "../utils/Database";
+import Database from "../config/Database";
 
 export default class AdoptionController {
     async index(request: Request, response: Response) {

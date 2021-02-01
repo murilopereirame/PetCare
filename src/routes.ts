@@ -28,33 +28,33 @@ routes.post('/adoption', adoptionController.create);
 routes.post('/breed', breedController.create);
 routes.post('/petType', petTypeController.create);
 routes.post('/userType', userTypeController.create);
-routes.post('/pet', petController.create);
-routes.post('/user', userController.create);
+routes.post('/pets', petController.createPet);
+routes.post('/users', userController.createUser);
 routes.post('/petshop', petShopController.create);
 
 routes.get('/adoption', adoptionController.search);
 routes.get('/breed', breedController.search);
 routes.get('/petType', petTypeController.search);
 routes.get('/userType', userTypeController.search);
-routes.get('/pet', petController.search);
-routes.get('/pet/avaliable', petController.avaliablePets);
-routes.get('/user', userController.search);
+routes.get('/pets', petController.getPets);
+routes.get('/pets/avaliable', petController.avaliablePets);
+routes.get('/users', userController.getUsers);
 routes.get('/petshop', petShopController.search);
 
 routes.patch('/adoption/:id', adoptionController.update);
 routes.patch('/breed/:id', breedController.update);
 routes.patch('/petType/:id', petTypeController.update);
 routes.patch('/userType/:id', userTypeController.update);
-routes.patch('/pet/:id', petController.update);
-routes.patch('/user/:id', userController.update);
+routes.patch('/pets/:id', petController.getPet);
+routes.patch('/users/:id', userController.getUser);
 routes.patch('/petshop/:id', petShopController.update);
 
 routes.delete('/adoption/:id', adoptionController.delete);
 routes.delete('/breed/:id', breedController.delete);
 routes.delete('/petType/:id', petTypeController.delete);
 routes.delete('/userType/:id', userTypeController.delete);
-routes.delete('/pet/:id', petController.delete);
-routes.delete('/user/:id', userController.delete);
+routes.delete('/pets/:id', petController.deletePet);
+routes.delete('/users/:id', userController.deleteUser);
 routes.delete('/petshop/:id', petShopController.delete);
 
 export default routes;

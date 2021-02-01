@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { PetShop } from "../entity/PetShop";
-import Database from "../utils/Database";
+import Database from "../config/Database";
 
 export default class PetShopController {
     async index(request: Request, response: Response) {
