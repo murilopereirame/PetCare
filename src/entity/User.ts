@@ -1,5 +1,5 @@
-import {Entity, PrimaryGeneratedColumn, Column, ManyToOne} from "typeorm";
-import { UserType } from "./UserType";
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany, ManyToMany, JoinTable } from "typeorm";
+import { Pet } from "./Pet";
 
 @Entity()
 export class User {
@@ -65,6 +65,13 @@ export class User {
     })
     phone!: string
 
-    @ManyToOne(type => UserType, type => type.user, {nullable: false, cascade: true})
-    userType!: UserType;
+    @OneToMany(() => Pet, pet => pet.user, {
+        cascade: true
+    })
+    pets!: Pet[];
+
+    @ManyToMany(() => Pet)
+    @JoinTable()
+    likedPets!: Pet[];
+
 }
