@@ -13,6 +13,6 @@ app.use(express.json());
 app.use(routes);
 
 //Init server
-app.listen(9229, () => {
-    console.log("Server running at port 9229");
+app.listen(6789, () => {
+    console.log("Server running at port 6789");
 });
