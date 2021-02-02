@@ -31,7 +31,7 @@ export class Pet {
     @JoinColumn()
     breed!: Breed;
 
-    @ManyToOne(type => User, user => user.pets, {nullable: false, cascade: true})
+    @ManyToOne(type => User, user => user.pets, {nullable: false})
     user!: User;
     @Column({
         length: 100
