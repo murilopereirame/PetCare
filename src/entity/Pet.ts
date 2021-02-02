@@ -22,11 +22,6 @@ export class Pet {
     })
     images!: PetImage[];
 
-    @Column({
-        length: 160
-    })
-    description!: string;
-
     @ManyToOne(type => Breed, {nullable: false, cascade: true})
     @JoinColumn()
     breed!: Breed;

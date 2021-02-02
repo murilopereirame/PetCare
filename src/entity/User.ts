@@ -1,7 +1,6 @@
 import {Entity, PrimaryGeneratedColumn, Column, ManyToOne, OneToMany, ManyToMany, JoinTable} from "typeorm";
 import { Adoption } from "./Adoption";
 import { Pet } from "./Pet";
-import { UserType } from "./UserType";
 
 @Entity()
 export class User {
@@ -66,9 +65,6 @@ export class User {
         length: 11
     })
     phone!: string
-
-    @ManyToOne(type => UserType, type => type.user, {nullable: false, cascade: true})
-    userType!: UserType;
 
     @OneToMany(type => Adoption, adoption => adoption.user)
     adoptions!: Adoption[]
