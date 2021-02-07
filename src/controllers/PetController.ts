@@ -1,8 +1,9 @@
 import { Request, Response } from "express";
 import { Pet } from "../entity/Pet";
 import Database from "../config/Database";
+import fs from 'fs';
 
-export default class PetController {
+export default class PetController {    
   getPets = async (request: Request, response: Response) => {
     let connection = await Database.getInstance().getConnection();
     let options: any = { relations: ["images", "user"] };
@@ -47,9 +48,39 @@ export default class PetController {
       });
   };
 
-  createPet = async (request: Request, response: Response) => {
-    let user = Object.assign(new Pet(), request.body);
+  createPet = async (request: Request, response: Response) => {    
     let connection = await Database.getInstance().getConnection();
+    let images = request.body.images;
+    delete request.body.images;
+
+    let imagesURI = [];
+
+    for(let img of images) {
+        let base64Image = img.split(';base64,').pop();
+        let timestamp = +new Date();
+        let petName = request.body.name;
+        var array = new Uint32Array(1);       
+        
+        let getRandomValues = require('get-random-values'); 
+        let md5 = require('md5');
+        
+        getRandomValues(array);        
+
+        let fullString = `${timestamp}&${petName}&${array[0]}`;
+
+        let hash = md5(fullString);
+        
+        fs.writeFile(`images/${hash}.jpg`, base64Image, {encoding: 'base64'}, function(err: any) {            
+            if(err)
+                console.log(err);
+        });
+
+        imagesURI.push({uri: `images/${hash}.jpg`});
+    }
+
+    let user = Object.assign(new Pet(), request.body);
+    
+    user.images = imagesURI;
 
     connection.manager
       .save(user)
