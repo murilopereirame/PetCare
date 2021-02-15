@@ -1,9 +1,10 @@
 import { Request, Response } from "express";
 import { Pet } from "../entity/Pet";
 import Database from "../config/Database";
-import fs from 'fs';
+import fs from "fs";
+import { PetImage } from "../entity/PetImage";
 
-export default class PetController {    
+export default class PetController {
   getPets = async (request: Request, response: Response) => {
     let connection = await Database.getInstance().getConnection();
     let options: any = { relations: ["images", "user"] };
@@ -48,40 +49,42 @@ export default class PetController {
       });
   };
 
-  createPet = async (request: Request, response: Response) => {    
+  createPet = async (request: Request, response: Response) => {
     let connection = await Database.getInstance().getConnection();
-console.log(request.body);
     let images = request.body.images;
     delete request.body.images;
 
     let imagesURI = [];
 
-    for(let img of images) {
-        let base64Image = img.split(';base64,').pop();
-        let timestamp = +new Date();
-        let petName = request.body.name;
-        var array = new Uint8Array(1);       
-        
-        let getRandomValues = require('get-random-values'); 
-        let md5 = require('md5');
-        
-        getRandomValues(array);        
+    for (let img of images) {
+      let base64Image = img.split(";base64,").pop();
+      let timestamp = +new Date();
+      let petName = request.body.name;
+      var array = new Uint8Array(1);
 
-        let fullString = `${timestamp}&${petName}&${array[0]}`;
+      let getRandomValues = require("get-random-values");
+      let md5 = require("md5");
 
-        let hash = md5(fullString);
-	if(!fs.existsSync("images"))
-        	fs.mkdirSync("images");        
-        fs.writeFile(`images/${hash}.jpg`, base64Image, {encoding: 'base64'}, function(err: any) {            
-            if(err)
-                console.log(err);
-        });
+      getRandomValues(array);
 
-        imagesURI.push({uri: `${hash}.jpg`});
+      let fullString = `${timestamp}&${petName}&${array[0]}`;
+
+      let hash = md5(fullString);
+      if (!fs.existsSync("images")) fs.mkdirSync("images");
+      fs.writeFile(
+        `images/${hash}.jpg`,
+        base64Image,
+        { encoding: "base64" },
+        function (err: any) {
+          if (err) console.log(err);
+        }
+      );
+
+      imagesURI.push({ uri: `${hash}.jpg` });
     }
 
     let user = Object.assign(new Pet(), request.body);
-    
+
     user.images = imagesURI;
 
     connection.manager
@@ -123,10 +126,16 @@ console.log(request.body);
       "SELECT * FROM pet LEFT OUTER JOIN adoption ON pet.idPet = adoption.petIdPet;"
     );
     console.log(result);
-  }
+  };
 
   deletePet = async (request: Request, response: Response) => {
     let connection = await Database.getInstance().getConnection();
+
+    let images = await connection.manager.find(PetImage, {where: {pet: request.params.id}})
+    
+    for(let img of images) {
+      fs.unlinkSync(`images/${img.uri}`);
+    }
 
     connection.manager
       .delete(Pet, {
