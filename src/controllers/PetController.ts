@@ -128,7 +128,7 @@ export default class PetController {
 
     connection.manager
       .delete(Pet, {
-        id: request.params.id,
+        idPet: request.params.id,
       })
       .then((result: any) => {
         response.statusCode = 200;
