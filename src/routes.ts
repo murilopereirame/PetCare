@@ -27,6 +27,7 @@ routes.post('/breed', breedController.create);
 routes.post('/petType', petTypeController.create);
 routes.post('/pets', petController.createPet);
 routes.post('/users', userController.createUser);
+routes.post('/login', userController.login);
 routes.post('/petshop', petShopController.create);
 
 routes.get('/adoption', adoptionController.search);

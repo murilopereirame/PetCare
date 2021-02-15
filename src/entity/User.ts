@@ -9,6 +9,18 @@ export class User {
     idUser!: number;
 
     @Column({
+        length: 80,
+        nullable: false
+    })
+    username!: string;
+
+    @Column({
+        length: 255,
+        nullable: false
+    })
+    password!:string;
+
+    @Column({
         length: 80
     })
     firstName!: string;

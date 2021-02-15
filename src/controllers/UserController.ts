@@ -62,6 +62,34 @@ export default class UserController {
       });
   };
 
+  login = async(request: Request, response: Response) => {
+    let usr = request.body.user;
+    let password = request.body.password;
+
+    Database.getInstance().getConnection().then(conn => {
+      conn.manager.find(User, {
+        relations: ["pets", "likedPets"],
+        where: {
+          username: usr,
+          password
+        },
+      }).then((user) => {
+        if(user.length === 0)
+          return response.status(401).json({auth: false, message: "Wrong user or password"});
+          
+        response.statusCode = 200;
+        return response.json(user[0]);
+      }).catch(err => {
+        response.statusCode = 500;
+        return response.json({
+          auth: false,
+          error: "There was an error on our servers",
+          message: err
+        });
+      })
+    })
+  };
+
   updateUser = async (request: Request, response: Response) => {
     let user = Object.assign(new User(), request.body);
     let connection = await Database.getInstance().getConnection();
