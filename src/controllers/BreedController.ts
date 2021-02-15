@@ -24,6 +24,7 @@ export default class BreedController {
             response.statusCode = 200;
             return response.json(entity);
         }).catch(err => {
+		console.log(err);
             response.statusCode = 500;
             return response.json({auth: false, error: "There was an error on our servers"});
         })

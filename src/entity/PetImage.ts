@@ -8,7 +8,8 @@ export class PetImage {
     uri!: string;
 
     @ManyToOne(() => Pet, pet => pet.images, {
-        nullable: false
+        nullable: false,
+        onDelete: 'CASCADE'
     })
     pet!: Pet;
 

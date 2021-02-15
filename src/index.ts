@@ -9,12 +9,12 @@ Database.getInstance().getConnection();
 //Configure server
 const app = express();
 app.use(cors());
-app.use(express.json());
+app.use(express.json({limit: '50MB'}));
 app.use('/api/v1', routes);
-
+app.use(express.static('images'));
 //Init server
-const server = app.listen(6789, () => {
-    console.log("Server running at port 6789");
+const server = app.listen(80, () => {
+    console.log("Server running at port 80");
 });
 
 process.on('unhandledRejection', (err: any, promise) => {
