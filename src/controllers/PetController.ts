@@ -140,7 +140,8 @@ export default class PetController {
         response.statusCode = 500;
         return response.json({
           auth: false,
-          error: "There was an error on our servers",
+          error: err,
+          msg: err.getMessage()
         });
       });
   };
