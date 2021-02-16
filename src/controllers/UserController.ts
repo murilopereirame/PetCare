@@ -63,14 +63,14 @@ export default class UserController {
   };
 
   login = async(request: Request, response: Response) => {
-    let usr = request.body.user;
+    let username = request.body.username;
     let password = request.body.password;
 
     Database.getInstance().getConnection().then(conn => {
       conn.manager.find(User, {
         relations: ["pets", "likedPets"],
         where: {
-          username: usr,
+          username,
           password
         },
       }).then((user) => {
