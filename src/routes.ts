@@ -29,6 +29,7 @@ routes.post('/pets', petController.createPet);
 routes.post('/users', userController.createUser);
 routes.post('/login', userController.login);
 routes.post('/petshop', petShopController.create);
+routes.post('/like/:id', userController.likePet);
 
 routes.get('/adoption', adoptionController.search);
 routes.get('/breed', breedController.search);
