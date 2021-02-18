@@ -137,7 +137,7 @@ export default class UserController {
     let connection = await Database.getInstance().getConnection();
     const pet: any = await connection.manager.findOne(Pet, request.body.id);
     const user = await connection.manager.findOne(User, request.params.id, {
-      relations: ["pets", "likedPets"],
+      relations: ["pets", "likedPets", "likedPets.user"],
     });
     const pets = user!.likedPets;
     if (!pets.find((element) => element === pet)) {
