@@ -38,6 +38,7 @@ routes.get('/pets', petController.getPets);
 routes.get('/pets/avaliable', petController.avaliablePets);
 routes.get('/users', userController.getUsers);
 routes.get('/petshop', petShopController.search);
+routes.get('/likes/:id', userController.likedPets);
 
 routes.patch('/adoption/:id', adoptionController.update);
 routes.patch('/breed/:id', breedController.update);

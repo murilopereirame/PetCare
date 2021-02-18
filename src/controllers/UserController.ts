@@ -153,4 +153,23 @@ export default class UserController {
       });
     }
   };
+
+  likedPets = async (request: Request, response: Response) => {
+    Database.getInstance().getConnection().then(conn => {
+      conn.manager.find(User, {
+        where: {
+          idUser: request.params.id
+        },
+        select: [
+          "likedPets"
+        ],
+        relations: ["likedPets"]
+      }).then((rt: User[]) => {
+        let pets = <Pet[]>rt[0].likedPets;
+        return response.status(200).json({
+          data: pets
+        })
+      })
+    })
+  }
 }
