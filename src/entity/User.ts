@@ -16,7 +16,8 @@ export class User {
 
     @Column({
         length: 255,
-        nullable: false
+        nullable: false,
+        select: false
     })
     password!:string;
 
