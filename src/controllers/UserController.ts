@@ -164,10 +164,9 @@ export default class UserController {
           "likedPets"
         ],
         relations: ["likedPets"]
-      }).then((rt) => {
-        let pets = rt?.likedPets;
+      }).then((rt) => {        
         return response.status(200).json({
-          data: pets
+          rt
         })
       })
     })
