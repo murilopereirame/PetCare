@@ -156,16 +156,16 @@ export default class UserController {
 
   likedPets = async (request: Request, response: Response) => {
     Database.getInstance().getConnection().then(conn => {
-      conn.manager.find(User, {
+      conn.manager.findOne(User, {
         where: {
-          idUser: request.params.id
+          idUser: Number.parseInt(request.params.id)
         },
         select: [
           "likedPets"
         ],
         relations: ["likedPets"]
-      }).then((rt: User[]) => {
-        let pets = <Pet[]>rt[0].likedPets;
+      }).then((rt) => {
+        let pets = <Pet[]>rt?.likedPets;
         return response.status(200).json({
           data: pets
         })
