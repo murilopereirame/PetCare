@@ -156,12 +156,7 @@ export default class UserController {
 
   likedPets = async (request: Request, response: Response) => {
     Database.getInstance().getConnection().then(conn => {
-      conn.manager.findOne(User, request.params.id, {                
-        select: [
-          "likedPets"
-        ],
-        relations: ["likedPets"]
-      }).then((rt) => {        
+      conn.manager.findOne(User, request.params.id).then((rt) => {        
         return response.status(200).json({
           rt
         })
