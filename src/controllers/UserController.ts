@@ -137,7 +137,7 @@ export default class UserController {
     let connection = await Database.getInstance().getConnection();
     const pet: any = await connection.manager.findOne(Pet, request.body.id);
     const user = await connection.manager.findOne(User, request.params.id, {
-      relations: ["pets", "likedPets", "likedPets.user"],
+      relations: ["pets", "likedPets"],
     });
     const pets = user!.likedPets;
     if (!pets.find((element) => element === pet)) {
@@ -156,7 +156,7 @@ export default class UserController {
 
   likedPets = async (request: Request, response: Response) => {
     Database.getInstance().getConnection().then(conn => {
-      conn.manager.findOne(User, request.params.id, {relations: ["pets", "likedPets"]}).then((rt) => {        
+      conn.manager.findOne(User, request.params.id, {relations: ["pets", "likedPets", "likedPets.user"]}).then((rt) => {        
         return response.status(200).json({
           pets: rt!.likedPets
         })
