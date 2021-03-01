@@ -83,11 +83,12 @@ export class User {
     adoptions!: Adoption[]
 
     @OneToMany(() => Pet, pet => pet.user, {
-        cascade: true
+        cascade: true,
+        eager: true
     })
     pets!: Pet[];
 
-    @ManyToMany(() => Pet)
+    @ManyToMany(() => Pet, {eager: true})
     @JoinTable()
     likedPets!: Pet[];
 
