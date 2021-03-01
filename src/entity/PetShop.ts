@@ -18,7 +18,7 @@ export class PetShop {
     street!: string;
     @Column({
         type: 'varchar',
-        length: 20,
+        length: 120,
         nullable: false
     })
     streetNumber!: string

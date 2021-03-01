@@ -68,7 +68,6 @@ export default class UserController {
 
     Database.getInstance().getConnection().then(conn => {
       conn.manager.find(User, {
-        relations: ["pets", "likedPets"],
         where: {
           username,
           password
