@@ -35,6 +35,7 @@ routes.get('/adoption', adoptionController.search);
 routes.get('/breed', breedController.search);
 routes.get('/petType', petTypeController.search);
 routes.get('/pets', petController.getPets);
+routes.get('/pets/:id/likes', petController.likes);
 routes.get('/pets/avaliable', petController.avaliablePets);
 routes.get('/users', userController.getUsers);
 routes.get('/petshop', petShopController.search);

@@ -120,20 +120,55 @@ export default class PetController {
       });
   };
 
+  likes = async (request: Request, response: Response) => {
+    let idPet = request.params.id;
+    Database.getInstance()
+      .getConnection()
+      .then((conn) => {
+        conn.query(
+          `SELECT 
+            idUser,
+            firstName,
+            surName,
+            street,
+            placeNumber,
+            complement,
+            neighborhood,
+            zipCode,
+            city,
+            uf,
+            ddd,
+            phone,
+            username 
+          FROM 
+            user 
+          INNER JOIN user_liked_pets_pet AS ULP 
+          WHERE 
+            ULP.userIdUser = user.idUser 
+          AND 
+            ULP.petIdPet = ${parseInt(idPet)}`
+        ).then(result => {
+          response.status(200).json(result);
+        })
+      });
+  };
+
   avaliablePets = async (request: Request, response: Response) => {
     let connection = await Database.getInstance().getConnection();
     let result = connection.query(
       "SELECT * FROM pet LEFT OUTER JOIN adoption ON pet.idPet = adoption.petIdPet;"
     );
-    console.log(result);
+    response.status(200).json(result);
   };
 
   deletePet = async (request: Request, response: Response) => {
     let connection = await Database.getInstance().getConnection();
 
-    let images = await connection.manager.find(PetImage, {where: {pet: request.params.id}})
-    
-    for(let img of images) {
+    let images = await connection.manager.find(PetImage, {
+      where: { pet: request.params.id },
+    });
+
+    for (let img of images) {
       fs.unlinkSync(`images/${img.uri}`);
     }
 
