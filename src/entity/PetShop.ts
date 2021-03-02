@@ -70,4 +70,10 @@ export class PetShop {
         nullable: false
     })
     description!: string
+    @Column({
+        type: 'varchar',
+        length: 255,
+        nullable: true
+    })
+    imageURI!: string
 }
