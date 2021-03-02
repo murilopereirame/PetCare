@@ -7,7 +7,7 @@ export class Adoption {
     @PrimaryGeneratedColumn()
     idAdoption!: number;
 
-    @ManyToOne(type => User, user => user.adoptions, {nullable: false, cascade: true})
+    @ManyToOne(type => User, user => user.adoptions, {nullable: true, cascade: true})
     @JoinColumn()
     user!: User;
 
