@@ -148,17 +148,36 @@ export default class PetController {
           AND 
             ULP.petIdPet = ${parseInt(idPet)}`
         ).then(result => {
-          response.status(200).json(result);
+          return response.status(200).json(result);
+        }).catch(err => {
+          console.log(err);
+          return response.status(500).json({
+            auth: "false",
+            message: "There is an error on our servers",
+            error: err
+          })
         })
       });
   };
 
   avaliablePets = async (request: Request, response: Response) => {
-    let connection = await Database.getInstance().getConnection();
-    let result = connection.query(
-      "SELECT * FROM pet LEFT OUTER JOIN adoption ON pet.idPet = adoption.petIdPet;"
-    );
-    response.status(200).json(result);
+    Database.getInstance()
+      .getConnection()
+      .then((conn) => {
+        conn.query(`
+          SELECT * FROM pet
+          LEFT OUTER JOIN adoption ON pet.idPet = adoption.petIdPet;
+        `).then((result) => {
+          return response.status(200).json(result);
+        }).catch(err => {
+          console.log(err);
+          return response.status(500).json({
+            auth: "false",
+            message: "There is an error on our servers",
+            error: err
+          })
+        })
+      });
   };
 
   deletePet = async (request: Request, response: Response) => {
