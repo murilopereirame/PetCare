@@ -148,6 +148,7 @@ export default class PetController {
         });
       })
       .catch((err) => {
+        console.log(err);
         response.statusCode = 500;
         return response.json({
           auth: false,
