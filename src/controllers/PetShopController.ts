@@ -67,7 +67,7 @@ export default class PetShopController {
     
         let petshop = Object.assign(new PetShop(), request.body);
 
-        petshop.image = imageURI[0].uri;
+        petshop.imageURI = imageURI[0].uri;
 
         connection.manager.save(petshop).then((entity: any) => {            
             response.statusCode = 201;
