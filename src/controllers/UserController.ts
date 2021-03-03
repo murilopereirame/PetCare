@@ -155,7 +155,7 @@ export default class UserController {
           )
           .then((result) => {
             return response.status(202).json({
-              affectedRows: result.raw.affectedRows,
+              result: "ok",
             });
           })
           .catch((err) => {
