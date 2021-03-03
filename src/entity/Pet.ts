@@ -18,7 +18,8 @@ export class Pet {
     name!: string;
     
     @OneToMany(() => PetImage, petImage => petImage.pet, {
-        cascade: true
+        cascade: true,
+        eager: true
     })
     images!: PetImage[];
 

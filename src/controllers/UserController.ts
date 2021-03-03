@@ -62,31 +62,38 @@ export default class UserController {
       });
   };
 
-  login = async(request: Request, response: Response) => {
+  login = async (request: Request, response: Response) => {
     let username = request.body.username;
     let password = request.body.password;
 
-    Database.getInstance().getConnection().then(conn => {
-      conn.manager.find(User, {
-        where: {
-          username,
-          password
-        },
-      }).then((user) => {
-        if(user.length === 0)
-          return response.status(401).json({auth: false, message: "Wrong user or password"});
-          
-        response.statusCode = 200;
-        return response.json(user[0]);
-      }).catch(err => {
-        response.statusCode = 500;
-        return response.json({
-          auth: false,
-          error: "There was an error on our servers",
-          message: err
-        });
-      })
-    })
+    Database.getInstance()
+      .getConnection()
+      .then((conn) => {
+        conn.manager
+          .find(User, {
+            where: {
+              username,
+              password,
+            },
+          })
+          .then((user) => {
+            if (user.length === 0)
+              return response
+                .status(401)
+                .json({ auth: false, message: "Wrong user or password" });
+
+            response.statusCode = 200;
+            return response.json(user[0]);
+          })
+          .catch((err) => {
+            response.statusCode = 500;
+            return response.json({
+              auth: false,
+              error: "There was an error on our servers",
+              message: err,
+            });
+          });
+      });
   };
 
   updateUser = async (request: Request, response: Response) => {
@@ -136,25 +143,31 @@ export default class UserController {
     let pet = request.body.idPet;
     let user = request.params.id;
 
-    Database.getInstance().getConnection().then((conn) => {
-      conn.query(`
+    Database.getInstance()
+      .getConnection()
+      .then((conn) => {
+        conn
+          .query(
+            `
         DELETE FROM user_liked_pets_pet 
         WHERE userIdUser=${parseInt(user)} 
         AND petIdPet=${parseInt(pet)}`
-      ).then((result) => {
-        return response.status(202).json({
-          affectedRows: result.raw.affectedRows,
-        });
-      }).catch(err => {
-        console.log(err);
-        return response.status(200).json({
-          auth: false,
-          error: "There was an error on our servers",
-          message: err
-        });
-      })
-    })
-  }
+          )
+          .then((result) => {
+            return response.status(202).json({
+              affectedRows: result.raw.affectedRows,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            return response.status(200).json({
+              auth: false,
+              error: "There was an error on our servers",
+              message: err,
+            });
+          });
+      });
+  };
 
   likePet = async (request: Request, response: Response) => {
     let connection = await Database.getInstance().getConnection();
@@ -178,12 +191,23 @@ export default class UserController {
   };
 
   likedPets = async (request: Request, response: Response) => {
-    Database.getInstance().getConnection().then(conn => {
-      conn.manager.findOne(User, request.params.id, {relations: ["pets", "likedPets", "likedPets.user", "likedPets.images"]}).then((rt) => {        
-        return response.status(200).json({
-          pets: rt!.likedPets
-        })
-      })
-    })
-  }
+    Database.getInstance()
+      .getConnection()
+      .then((conn) => {
+        conn.manager
+          .findOne(User, request.params.id, {
+            relations: [
+              "pets",
+              "likedPets",
+              "likedPets.user",
+              "likedPets.images",
+            ],
+          })
+          .then((rt) => {
+            return response.status(200).json({
+              pets: rt!.likedPets,
+            });
+          });
+      });
+  };
 }
