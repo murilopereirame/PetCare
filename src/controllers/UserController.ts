@@ -132,6 +132,30 @@ export default class UserController {
       });
   };
 
+  unlikePet = async (request: Request, response: Response) => {
+    let pet = request.body.idPet;
+    let user = request.params.id;
+
+    Database.getInstance().getConnection().then((conn) => {
+      conn.query(`
+        DELETE FROM user_liked_pets_pet 
+        WHERE userIdUser=${parseInt(user)} 
+        AND petIdPet=${parseInt(pet)}`
+      ).then((result) => {
+        return response.status(202).json({
+          affectedRows: result.raw.affectedRows,
+        });
+      }).catch(err => {
+        console.log(err);
+        return response.status(200).json({
+          auth: false,
+          error: "There was an error on our servers",
+          message: err
+        });
+      })
+    })
+  }
+
   likePet = async (request: Request, response: Response) => {
     let connection = await Database.getInstance().getConnection();
     const pet: any = await connection.manager.findOne(Pet, request.body.id);
