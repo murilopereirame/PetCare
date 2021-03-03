@@ -134,11 +134,10 @@ export default class PetController {
 
       imagesURI.push({ uri: `${hash}.jpg` });
     }
-
-    console.log(request.body);
+    
     let pet = Object.assign(new Pet(), request.body);
-
     pet.images = imagesURI;
+    console.log(pet);
 
     connection.manager
       .update(Pet, request.params.id, pet)
