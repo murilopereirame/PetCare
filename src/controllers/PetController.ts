@@ -35,6 +35,7 @@ export default class PetController {
     connection.manager
       .find(Pet, {
         where: conditions,
+        relations: ['breed', 'breed.animalType']
       })
       .then((entity: Pet[]) => {
         response.statusCode = 200;
