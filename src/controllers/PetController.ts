@@ -135,12 +135,13 @@ export default class PetController {
       imagesURI.push({ uri: `${hash}.jpg` });
     }
 
-    let user = Object.assign(new Pet(), request.body);
+    console.log(request.body);
+    let pet = Object.assign(new Pet(), request.body);
 
-    user.images = imagesURI;
+    pet.images = imagesURI;
 
     connection.manager
-      .update(Pet, request.params.id, user)
+      .update(Pet, request.params.id, pet)
       .then((result: any) => {
         response.statusCode = 200;
         return response.json({
