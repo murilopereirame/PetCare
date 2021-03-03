@@ -140,9 +140,7 @@ export default class PetController {
     connection.manager.transaction(async trx => {
       try {
         await trx.delete(PetImage, {
-          where: {
-            pet: Number.parseInt(request.params.id)
-          }
+          pet: Number.parseInt(request.params.id)          
         })
 
         await trx.save(PetImage, imagesObj);
