@@ -45,8 +45,8 @@ routes.get('/likes/:id', userController.likedPets);
 routes.patch('/adoption/:id', adoptionController.update);
 routes.patch('/breed/:id', breedController.update);
 routes.patch('/petType/:id', petTypeController.update);
-routes.patch('/pets/:id', petController.getPet);
-routes.patch('/users/:id', userController.getUser);
+routes.patch('/pets/:id', petController.updatePet);
+routes.patch('/users/:id', userController.updateUser);
 routes.patch('/petshop/:id', petShopController.update);
 
 routes.delete('/adoption/:id', adoptionController.delete);
