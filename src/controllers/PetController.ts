@@ -7,7 +7,7 @@ import { PetImage } from "../entity/PetImage";
 export default class PetController {
   getPets = async (request: Request, response: Response) => {
     let connection = await Database.getInstance().getConnection();
-    let options: any = { relations: ["images", "user"] };
+    let options: any = { relations: ["images", "user", 'breed', 'breed.animalType'] };
 
     if (request.query) {
       options.where = request.query;
