@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn, ManyToOne } from "typeorm";
+import { User } from "./User";
 
 @Entity()
 export class PetShop {
@@ -76,4 +77,6 @@ export class PetShop {
         nullable: true
     })
     imageURI!: string
+    @ManyToOne(type => User, user => user.petshops, {nullable: false})
+    user!: User;
 }
