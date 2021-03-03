@@ -106,7 +106,7 @@ export default class PetController {
     let images = request.body.images;
     delete request.body.images;
 
-    let imagesURI = [];
+    let imagesObj = Array();
 
     for (let img of images) {
       let base64Image = img.split(";base64,").pop();
@@ -132,29 +132,35 @@ export default class PetController {
         }
       );
 
-      imagesURI.push({ uri: `${hash}.jpg` });
+      imagesObj.push({uri: `${hash}.jpg`, pet: {idPet: Number.parseInt(request.params.id)}});
     }
     
     let pet = Object.assign(new Pet(), request.body);
-    pet.images = imagesURI;
-    console.log(pet);
+    
+    connection.manager.transaction(async trx => {
+      try {
+        await trx.delete(PetImage, {
+          where: {
+            pet: Number.parseInt(request.params.id)
+          }
+        })
 
-    connection.manager
-      .update(Pet, request.params.id, pet)
-      .then((result: any) => {
+        await trx.save(PetImage, imagesObj);
+
+        let result = await trx.update(Pet, request.params.id, pet);
         response.statusCode = 200;
         return response.json({
           changedRows: result.raw.changedRows,
         });
-      })
-      .catch((err) => {
+      }catch(err){
         console.log(err);
         response.statusCode = 500;
         return response.json({
           auth: false,
           error: "There was an error on our servers",
         });
-      });
+      }
+    });    
   };
 
   likes = async (request: Request, response: Response) => {

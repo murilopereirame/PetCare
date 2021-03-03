@@ -38,6 +38,7 @@ export default class AdoptionController {
             response.statusCode = 201;
             return response.json(entity);
         }).catch(err => {
+            console.log(err);
             response.statusCode = 500;
             return response.json({auth: false, error: "There was an error on our servers"});
         }); 
