@@ -3,6 +3,7 @@ import { Pet } from "../entity/Pet";
 import Database from "../config/Database";
 import fs from "fs";
 import { PetImage } from "../entity/PetImage";
+import { Adoption } from "../entity/Adoption";
 
 export default class PetController {
   getPets = async (request: Request, response: Response) => {
@@ -15,9 +16,20 @@ export default class PetController {
 
     connection.manager
       .find(Pet, options)
-      .then((entity: Pet[]) => {
+      .then(async (entity: Pet[]) => {
         response.statusCode = 200;
-        return response.json(entity);
+
+        let newPets = [];
+        for(let pet of entity) {
+          let result = await connection.manager.find(Adoption, {pet: pet});
+          if(result.length === 0)
+            newPets.push({...pet, isAdopted: false});
+          else
+            newPets.push({...pet, isAdopted: true});
+        }
+
+
+        return response.json(newPets);
       })
       .catch((err) => {
         response.statusCode = 500;
