@@ -19,7 +19,7 @@
    },
    "dependencies": {
       "@types/multer-s3": "^2.7.8",
-      "aws-sdk": "^2.812.0",
+      "aws-sdk": "^2.814.0",
       "cors": "^2.8.5",
       "express": "^4.17.1",
       "get-random-values": "^1.2.2",
